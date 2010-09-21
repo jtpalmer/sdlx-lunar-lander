@@ -1,6 +1,5 @@
 #!/usr/bin/perl
 use SDL; #needed to get all constants
-use SDL::Video;
 use SDLx::App;
 use SDLx::Sprite;
 
