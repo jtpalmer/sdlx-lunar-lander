@@ -2,9 +2,7 @@
 use SDL; #needed to get all constants
 use SDL::Video;
 use SDLx::App;
-use SDL::Surface;
-use SDL::Rect;
-use SDL::Image;
+use SDLx::Sprite;
 
 use strict;
 use warnings;
@@ -16,18 +14,8 @@ my $app = SDLx::App->new(
     depth  => 32,
 );
 
-my $background = SDL::Image::load('images/background.jpg');
-my $ship       = SDL::Image::load('images/ship.jpg');
-
-my $background_rect = SDL::Rect->new(0,0,
-    $background->w,
-    $background->h,
-);
-
-my $ship_rect = SDL::Rect->new(0,0,
-    $ship->w,
-    $ship->h,
-);
+my $background = SDLx::Sprite->new( image => 'images/background.jpg' );
+my $ship       = SDLx::Sprite->new( image => 'images/ship.jpg' );
 
 sub draw {
     my ( $x, $y ) = @_; # spaceship position
@@ -35,17 +23,10 @@ sub draw {
     # fix $y for screen resolution
     $y = 450 * ( 1000 - $y ) / 1000;
 
-    # background
-    SDL::Video::blit_surface($background, $background_rect, $app, $background_rect );
+    $background->draw($app);
+    $ship->draw_xy( $app, $x, $y );
 
-    # ship
-    my $ship_dest_rect = SDL::Rect->new(
-        $x, $y, $ship->w, $ship->h,
-    );
-
-    SDL::Video::blit_surface($ship, $ship_rect, $app, $ship_dest_rect );
-
-    SDL::Video::update_rects($app, $background_rect);
+    $app->update;
 }
 
 my $height   = 1000; # m
