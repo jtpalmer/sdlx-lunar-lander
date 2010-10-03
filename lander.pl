@@ -72,10 +72,8 @@ sub update_app {
 sub on_event {
     my ($event) = @_;
 
-    return 0 if $event->type == SDL_QUIT;
-    return 0 if $event->key_sym == SDLK_ESCAPE;
-
-    return 1;
+    return $app->stop if $event->type == SDL_QUIT;
+    return $app->stop if $event->key_sym == SDLK_ESCAPE;
 }
 
 $app->add_show_handler( \&draw_background );
